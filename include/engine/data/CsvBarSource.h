@@ -14,6 +14,33 @@ public:
 		, end_(end)
 	{};
 
+	CsvBarSource(CsvBarSource&& other) noexcept
+		: current_{other.current_}
+		, end_{other.end_}
+		, nextBar_{other.nextBar_}
+	{
+		other.current_ = nullptr;
+		other.end_ = nullptr;
+	}
+
+	CsvBarSource(const CsvBarSource& other) = delete;
+
+	CsvBarSource& operator=(CsvBarSource&& other) noexcept
+	{
+		if (this != &other)
+		{
+			current_ = other.current_;
+			end_ = other.end_;
+			nextBar_ = other.nextBar_;
+			other.current_ = nullptr;
+			other.end_ = nullptr;
+		}
+
+		return *this;
+	}
+
+	CsvBarSource& operator=(const CsvBarSource& other) = delete;
+
 	bool hasNext()
 	{
 		if (current_ >= end_) return false;
